@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash";
 import { PropertyRequiredException, BuilderException } from "../exceptions";
-import Message from "./message";
+import Message, { types } from "./message";
 
 class TextMessage extends Message {
   constructor(build) {
@@ -8,7 +8,7 @@ class TextMessage extends Message {
       throw new BuilderException("TextMessage");
     }
 
-    super(build);
+    super(build, types.TEXT);
     this.text = build._text;
   }
 

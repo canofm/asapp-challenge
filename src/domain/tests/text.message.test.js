@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import TextMessage from "../text.message";
+import { types } from "../message";
 import { PropertyRequiredException, BuilderException } from "../../exceptions";
 
 describe("TextMessage", () => {
@@ -34,6 +35,7 @@ describe("TextMessage", () => {
       expect(textMessage.recipient).to.be.eql(recipient);
       expect(textMessage.text).to.be.eql(text);
       expect(textMessage.id).to.be.eql(id);
+      expect(textMessage.type).to.be.eql(types.TEXT);
     });
   });
 });

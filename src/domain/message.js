@@ -1,11 +1,11 @@
 import { PropertyRequiredException, BuilderException } from "../exceptions";
 
 class Message {
-  constructor(build) {
+  constructor(build, type) {
     if (!build) {
       throw new BuilderException("Message");
     }
-
+    this.type = type;
     this.sender = build._sender;
     this.recipient = build._recipient;
     if (build._id) this.id = build._id;
@@ -45,3 +45,9 @@ class Message {
 }
 
 export default Message;
+
+export const types = {
+  TEXT: "text",
+  IMAGE: "image",
+  VIDEO: "video"
+};
