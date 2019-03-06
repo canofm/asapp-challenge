@@ -6,6 +6,7 @@ class HealthRepository {
   check() {
     return new Promise((resolve, reject) => {
       return this.db.get("SELECT 1", (err, row) => {
+        //TODO: just check connection
         if (err || row[1] != 1) {
           reject(new Error(err)); //TODO: DBConnectionException
         }
