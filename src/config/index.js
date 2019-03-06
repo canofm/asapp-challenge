@@ -9,8 +9,11 @@ const baseConfig = {
     path: process.env.DB_PATH || "/db/challenge.db"
   },
   api: {
-    baseUri: process.env.API_SUFFIX || "/api/v0",
-    token: process.env.SECRET_TOKEN || "aToken"
+    baseUri: process.env.API_SUFFIX || "/api/v0"
+  },
+  secrets: {
+    jwt: process.env.JWT_SECRET || "aToken",
+    jwtExp: process.env.JWT_EXP || "100d"
   }
 };
 
