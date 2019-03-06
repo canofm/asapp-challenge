@@ -5,7 +5,7 @@ class Message {
     if (!build) {
       throw new BuilderException("Message");
     }
-    this.type = type;
+    this.type = type; //TODO: Not sure if this is necessary
     this.sender = build._sender;
     this.recipient = build._recipient;
     if (build._id) this.id = build._id;
