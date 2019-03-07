@@ -2,6 +2,7 @@ import { expect } from "chai";
 import jwt from "jsonwebtoken";
 import AuthService from "../auth.service";
 import User from "../../../../domain/user";
+import { LoginException } from "../../../../exceptions";
 
 describe("AuthService", () => {
   let authService;
@@ -38,16 +39,15 @@ describe("AuthService", () => {
     it("should check password", async () => {
       const password = "aPasswd";
       const hashedPassword = await authService.encrypt(password);
-      const result = await authService.checkPassword(hashedPassword, password);
-
-      expect(result).to.be.true;
+      await authService.checkPassword(hashedPassword, password);
     });
 
     it("shouldn't check password", async () => {
       const hashedPassword = await authService.encrypt("aPasswd");
-      const result = await authService.checkPassword(hashedPassword, "otherPassword");
 
-      expect(result).to.be.false;
+      await authService
+        .checkPassword(hashedPassword, "otherPassword")
+        .catch(LoginException, () => {});
     });
   });
 });

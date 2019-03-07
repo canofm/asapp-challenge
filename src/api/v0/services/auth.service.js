@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import config from "../../../config";
 import { Promise } from "bluebird";
+import config from "../../../config";
+import { LoginException } from "../../../exceptions";
 
 class AuthService {
   constructor(appConfig = config) {
@@ -13,7 +14,13 @@ class AuthService {
   }
 
   checkPassword(hashedPassword, passwordToCheck) {
-    return bcrypt.compare(passwordToCheck, hashedPassword);
+    return new Promise(async (resolve, reject) => {
+      const match = await bcrypt.compare(passwordToCheck, hashedPassword);
+      if (match) {
+        return resolve();
+      }
+      reject(new LoginException());
+    });
   }
 
   getNewToken(user) {

@@ -18,11 +18,22 @@ class Exception extends Error {
 export class AuthorizationRequiredException extends Error {
   constructor(...args) {
     super(...args);
-    this.statusCode = 401;
+    this.statusCode = 403;
     this.header = { "WWW-Authenticate": `Basic realm="Secure Area"` };
     this.message = {
       text: "You need to be authenticate to do this operation",
       type: "authorization_required_exception"
+    };
+  }
+}
+
+export class LoginException extends Error {
+  constructor(...args) {
+    super(...args);
+    this.statusCode = 403;
+    this.message = {
+      text: "Username or password given didn't match with an existing user.",
+      type: "login_exception"
     };
   }
 }
