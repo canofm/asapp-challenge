@@ -1,9 +1,13 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../../../config";
-import * as Promise from "bluebird";
+import { Promise } from "bluebird";
 
 class AuthService {
+  constructor(appConfig = config) {
+    this.appConfig = appConfig;
+  }
+
   encrypt(password) {
     return bcrypt.hash(password, 8);
   }
@@ -16,9 +20,9 @@ class AuthService {
     return new Promise((resolve, reject) => {
       jwt.sign(
         { id: user.id },
-        config.secrets.jwt,
+        this.appConfig.secrets.jwt,
         {
-          expiresIn: config.secrets.jwtExp
+          expiresIn: this.appConfig.secrets.jwtExp
         },
         (err, token) => {
           if (err) {
@@ -32,7 +36,7 @@ class AuthService {
 
   verifyToken(token) {
     return new Promise((resolve, reject) => {
-      jwt.verify(token, config.secrets.jwt, (err, payload) => {
+      jwt.verify(token, this.appConfig.secrets.jwt, (err, payload) => {
         if (err) return reject(err);
         resolve(payload);
       });
