@@ -1,4 +1,5 @@
 import User from "../../../domain/user";
+import { method } from "bluebird";
 
 class UserMapper {
   toModel(entity) {
@@ -14,6 +15,10 @@ class UserMapper {
       .password(model.password)
       .id(model.id)
       .build();
+  }
+
+  toDomainAsync(model) {
+    return method(this.toDomain)(model);
   }
 }
 
