@@ -4,7 +4,7 @@ class HealthService {
   }
 
   check() {
-    return this.healthRepository.check().then(() => ({ health: "ok" })); //TODO: modelizar objeto health
+    return this.healthRepository.check().then(() => ({ health: "ok" }));
   }
 }
 

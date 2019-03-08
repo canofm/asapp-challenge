@@ -1,18 +1,19 @@
+import { ConnectionDBException } from "../../../exceptions";
+
 class HealthRepository {
   constructor(db) {
-    this.db = db;
+    this.db = db();
   }
 
   check() {
-    return new Promise((resolve, reject) => {
-      return this.db.get("SELECT 1", (err, row) => {
-        //TODO: just check connection
-        if (err || row[1] != 1) {
-          reject(new Error(err)); //TODO: DBConnectionException
-        }
-        resolve();
+    return this.db
+      .select()
+      .from("users")
+      .timeout(1000)
+      .catch(err => {
+        console.log(err);
+        throw new ConnectionDBException(err);
       });
-    });
   }
 }
 

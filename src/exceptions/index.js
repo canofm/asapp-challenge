@@ -38,6 +38,17 @@ export class LoginException extends Error {
   }
 }
 
+export class ConnectionDBException extends Exception {
+  constructor(...args) {
+    super(ConnectionDBException, ...args);
+    this.statusCode = 500;
+    this.message = {
+      text: "Can't connect to the DB.",
+      type: "connection_db_exception"
+    };
+  }
+}
+
 export class PropertyRequiredException extends Exception {
   constructor(...args) {
     super(PropertyRequiredException, ...args);

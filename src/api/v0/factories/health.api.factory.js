@@ -3,7 +3,7 @@ import HealthRepository from "../repositories/health.repository";
 import HealthService from "../services/health.service";
 import HealthController from "../controllers/health.controller";
 
-const defaultSetup = { db }; //TODO: db está mal en todos lados!
+const defaultSetup = { db };
 
 class HealthAPIFactory {
   static getController(overrides = {}) {

@@ -6,7 +6,7 @@ const env = process.env.NODE_ENV || "development";
 const baseConfig = {
   port: process.env.PORT || 3002,
   db: {
-    path: process.env.DB_PATH || "/db/challenge.db"
+    path: process.env.DB_PATH || "./db/challenge.sqlite3"
   },
   api: {
     baseUri: process.env.API_SUFFIX || "/api/v0"
