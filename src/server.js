@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-// import { connect } from "./db";
+import { connect } from "./db";
 import { router } from "./api";
 import config from "./config";
 import logger from "./logger";
@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // connecting to db
-// connect();
+connect();
 
 app.use(config.api.baseUri, router);
 
