@@ -8,11 +8,13 @@ export const connect = (filename = config.db.path) => {
     return connection;
   }
 
-  connection = knex({
+  connection = createNewConnection(filename);
+  return connection;
+};
+
+export const createNewConnection = filename =>
+  knex({
     client: "sqlite3",
     connection: { filename },
     useNullAsDefault: true
   });
-
-  return connection;
-};

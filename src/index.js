@@ -5,7 +5,7 @@ import app from "./server";
 import config from "./config";
 import logger from "./logger";
 
-const server = http.createServer(app);
+const server = http.createServer(app());
 
 server.listen(config.port, () => logger.info(`Server listing on port ${config.port}`));
 

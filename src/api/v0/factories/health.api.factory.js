@@ -21,6 +21,10 @@ class HealthAPIFactory {
     const repository = repo ? repo : this.getRepository();
     return new HealthService(repository);
   }
+
+  static getHealthOk() {
+    return { health: "ok" };
+  }
 }
 
 export default HealthAPIFactory;

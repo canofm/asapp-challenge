@@ -11,7 +11,6 @@ class HealthRepository {
       .from("users")
       .timeout(1000)
       .catch(err => {
-        console.log(err);
         throw new ConnectionDBException(err);
       });
   }

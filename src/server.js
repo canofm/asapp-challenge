@@ -5,18 +5,23 @@ import { connect } from "./db";
 import { router } from "./api";
 import config from "./config";
 import logger from "./logger";
+import { merge } from "lodash";
 
-const app = express();
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+export default (appConfig = {}) => {
+  const configuration = merge({}, config, appConfig);
 
-// connecting to db
-connect();
+  const app = express();
+  app.use(cors());
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
 
-app.use(config.api.baseUri, router);
+  // connecting to db
+  connect(configuration.db.path);
 
-export default app;
+  app.use(configuration.api.baseUri, router);
+
+  return app;
+};
 
 // last chance to log
 process.on("uncaughtException", err => {
