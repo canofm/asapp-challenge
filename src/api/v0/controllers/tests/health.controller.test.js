@@ -22,6 +22,7 @@ describe("Health API", () => {
     });
 
     it.skip("if it cannot connect to db, then it should returns 500", async () => {
+      //FIXME:
       const { error, ...res } = await request({ db: { path: "./db/fileThatDoesntExists.sqlite3" } })
         .post(healthURI)
         .send();

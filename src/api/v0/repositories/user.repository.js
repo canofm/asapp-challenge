@@ -6,7 +6,7 @@ class UserRepository {
 
   create(user) {
     const userModel = this.mapper.toModel(user);
-    return this.schema.insert(userModel).then(this.mapper.toDomain);
+    return this.schema.insert(userModel).then(([id]) => ({ id }));
   }
 }
 

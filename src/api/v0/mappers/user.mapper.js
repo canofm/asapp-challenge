@@ -2,11 +2,8 @@ import User from "../../../domain/user";
 import { method } from "bluebird";
 
 class UserMapper {
-  toModel(entity) {
-    return new User.Builder()
-      .username(entity.username)
-      .password(entity.password)
-      .build();
+  toModel({ username, password }) {
+    return { username, password };
   }
 
   toDomain(model) {

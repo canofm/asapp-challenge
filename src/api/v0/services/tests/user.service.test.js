@@ -4,34 +4,34 @@ import User from "../../../../domain/user";
 
 describe("UserService", () => {
   describe("on create", () => {
-    it("should set the encrypt passwd in the user and then pass it to the repository", () => {
+    it("should set the encrypt passwd in the user and then pass it to the repository", async () => {
       const oldPassword = "aPassword";
-      const newPassword = "hashedPassowrd";
+      const newPassword = "hashedPassword";
       const encrypt = sinon
         .stub()
         .withArgs(oldPassword)
-        .returns(newPassword);
-
-      const authServiceFake = { encrypt };
-      const userRepositoryFake = { create: () => {} };
-
-      const userService = new UserService(userRepositoryFake, authServiceFake);
+        .returns(Promise.resolve(newPassword));
 
       const userExpected = new User.Builder()
         .username("aName")
         .password(newPassword)
         .build();
 
+      const authServiceFake = { encrypt };
+      const userRepositoryFake = { create: () => {} };
+      const userService = new UserService(userRepositoryFake, authServiceFake);
+
       const userRepositoryMock = sinon
         .mock(userRepositoryFake)
         .expects("create")
         .withExactArgs(userExpected);
 
-      const user = new User.Builder()
+      const newUser = new User.Builder()
         .username("aName")
         .password(oldPassword)
         .build();
-      userService.create(user);
+
+      await userService.create(newUser);
 
       userRepositoryMock.verify();
     });
