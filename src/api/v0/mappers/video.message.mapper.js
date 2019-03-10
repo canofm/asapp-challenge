@@ -9,6 +9,10 @@ class VideoMessageMapper {
       .source(content.source)
       .build();
   }
+
+  toModel({ sender, recipient, url, source, type }) {
+    return { sender, recipient, url, source, type };
+  }
 }
 
 export default VideoMessageMapper;

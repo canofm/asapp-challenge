@@ -10,6 +10,10 @@ class ImageMessageMapper {
       .height(content.height)
       .build();
   }
+
+  toModel({ sender, recipient, type, url, width, height }) {
+    return { sender, recipient, type, url, width, height };
+  }
 }
 
 export default ImageMessageMapper;

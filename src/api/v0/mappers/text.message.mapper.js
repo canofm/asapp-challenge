@@ -8,6 +8,10 @@ class TextMessageMapper {
       .text(content.text)
       .build();
   }
+
+  toModel({ sender, recipient, type, text }) {
+    return { sender, recipient, type, text };
+  }
 }
 
 export default TextMessageMapper;

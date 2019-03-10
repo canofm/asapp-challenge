@@ -20,28 +20,42 @@ class MessageMapper {
         .set(types.VIDEO, new VideoMessageMapper());
     }
   }
-
-  toModel({ sender, recipient }) {
-    return { sender, recipient };
+  /**
+   * @description: map to a persistent entity
+   * @param {*} message: this should be a domain message
+   */
+  toModel(message) {
+    if (!this.mappers.has(message.type)) {
+      throw new UnsupportedMessageTypeException(message.type);
+    }
+    const mapper = this.mappers.get(message.type);
+    return mapper.toModel(message);
   }
 
-  toDomain(model) {
-    if (!model) {
+  /**
+   * @description: map to a domain entity
+   * @param {*} message: this message is the one from the request
+   */
+  toDomain(message) {
+    if (!message) {
       throw new PropertyRequiredException("Message", "content");
     }
-    if (!model.content) {
+    if (!message.content) {
       throw new MessageMustHaveAContentException();
     }
-    if (!this.mappers.has(model.content.type)) {
-      throw new UnsupportedMessageTypeException(model.content.type);
+    if (!this.mappers.has(message.content.type)) {
+      throw new UnsupportedMessageTypeException(message.content.type);
     }
 
-    const mapper = this.mappers.get(model.content.type);
-    return mapper.toDomain(model);
+    const mapper = this.mappers.get(message.content.type);
+    return mapper.toDomain(message);
   }
 
-  toDomainAsync(model) {
-    return method(this.toDomain)(model);
+  /**
+   * @description: this is just sugar syntax in order to chain promises
+   */
+  toDomainAsync(message) {
+    return method(this.toDomain)(message);
   }
 }
 
