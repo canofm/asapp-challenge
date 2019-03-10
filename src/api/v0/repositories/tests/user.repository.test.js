@@ -7,6 +7,7 @@ import User from "../../../../domain/user";
 import { EntityNotFoundException } from "../../../../exceptions";
 
 describe("UserRepository", () => {
+  //TODO: Improve matchers
   const userMapper = new UserMapper();
   describe("on create", () => {
     it("should calls schema's insert with the user to persist and returns its id", async () => {
