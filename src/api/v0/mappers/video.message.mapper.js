@@ -1,6 +1,7 @@
 import VideoMessage from "../../../domain/video.message";
+import MapperInterface from "./mapper.interface";
 
-class VideoMessageMapper {
+class VideoMessageMapper extends MapperInterface {
   toDomain({ sender, recipient, content }) {
     return new VideoMessage.Builder()
       .sender(sender)

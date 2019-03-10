@@ -1,6 +1,7 @@
 import ImageMessage from "../../../domain/image.message";
+import MapperInterface from "./mapper.interface";
 
-class ImageMessageMapper {
+class ImageMessageMapper extends MapperInterface {
   toDomain({ sender, recipient, content }) {
     return new ImageMessage.Builder()
       .sender(sender)

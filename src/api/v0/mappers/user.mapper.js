@@ -1,7 +1,8 @@
 import User from "../../../domain/user";
 import { method } from "bluebird";
+import MapperInterface from "./mapper.interface";
 
-class UserMapper {
+class UserMapper extends MapperInterface {
   toModel({ username, password }) {
     return { username, password };
   }

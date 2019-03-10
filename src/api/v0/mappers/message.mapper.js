@@ -8,9 +8,11 @@ import {
 import TextMessageMapper from "./text.message.mapper";
 import ImageMessageMapper from "./image.message.mapper";
 import VideoMessageMapper from "./video.message.mapper";
+import MapperInterface from "./mapper.interface";
 
-class MessageMapper {
+class MessageMapper extends MapperInterface {
   constructor(mappers = null) {
+    super();
     if (mappers) {
       this.mappers = mappers;
     } else {
