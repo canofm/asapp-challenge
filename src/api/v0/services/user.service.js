@@ -10,6 +10,10 @@ class UserService {
       .then(password => Object.assign(user, { password }))
       .then(userHashed => this.userRepository.create(userHashed));
   }
+
+  getByUsername(username) {
+    return this.userRepository.getByUsername(username);
+  }
 }
 
 export default UserService;
