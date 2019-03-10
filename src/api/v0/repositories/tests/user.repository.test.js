@@ -40,7 +40,7 @@ describe("UserRepository", () => {
       const where = sinon
         .stub()
         .withArgs("username", username)
-        .returns(Promise.resolve(user));
+        .returns(Promise.resolve([user]));
 
       const select = sinon
         .stub()
@@ -60,7 +60,7 @@ describe("UserRepository", () => {
       const where = sinon
         .stub()
         .withArgs("username", username)
-        .returns(Promise.resolve(null));
+        .returns(Promise.resolve([]));
 
       const select = sinon
         .stub()

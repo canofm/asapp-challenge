@@ -10,9 +10,9 @@ export default class Login {
   login(req, res, next) {
     return this.userMapper
       .toDomainAsync(req.body)
-      .then(user => props({ userDb: this.userService.getUser(user.username), user }))
+      .then(user => props({ userDb: this.userService.getByUsername(user.username), user }))
       .tap(({ userDb, user }) => this.authService.checkPassword(user.password, userDb.password))
-      .then(({ userFromDb }) => this.authService.getNewToken(userFromDb))
+      .then(({ userDb }) => props({ id: userDb.id, token: this.authService.getNewToken(userDb) }))
       .then(payload => res.status(200).json(payload))
       .catch(err => next(err));
   }

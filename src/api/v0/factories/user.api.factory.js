@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash";
 import { connect as db } from "../../../db";
 import UserRepository from "../repositories/user.repository";
 import UserService from "../services/user.service";
@@ -22,7 +23,7 @@ class UserAPIFactory {
   }
 
   static getService(repo = null, authService = null) {
-    const repository = repo ? repo : this.getRepository();
+    const repository = !isEmpty(repo) ? repo : this.getRepository();
     const service = authService ? authService : new AuthService();
     return new UserService(repository, service);
   }

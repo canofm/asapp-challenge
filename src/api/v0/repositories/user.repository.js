@@ -15,7 +15,7 @@ class UserRepository {
     return this.schema
       .select("id", "username", "password")
       .where("username", username)
-      .then(user => {
+      .then(([user]) => {
         if (!user) {
           throw new EntityNotFoundException("User", username);
         }
