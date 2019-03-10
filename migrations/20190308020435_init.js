@@ -40,6 +40,7 @@ function createMessagesTable(knex) {
     table.integer("width").unsigned();
     table.enu("source", ["youtube", "vimeo"]);
     table.enu("type", ["text", "image", "video"]);
+    table.timestamps();
 
     table
       .foreign("sender")
