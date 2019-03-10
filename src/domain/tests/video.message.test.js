@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import VideoMessage, { sources } from "../video.message";
 import { types } from "../message";
-import { PropertyRequiredException, BuilderException } from "../../exceptions";
+import { PropertyRequiredException, BuilderException, EnumException } from "../../exceptions";
 
 describe("VideoMessage", () => {
   describe("while building", () => {
@@ -22,7 +22,16 @@ describe("VideoMessage", () => {
       expect(() => new VideoMessage()).to.throw(BuilderException);
     });
 
-    it("test source", () => {}); //TODO: add this test
+    it("the source must one of the sources enum", () => {
+      expect(() =>
+        new VideoMessage.Builder()
+          .sender(sender)
+          .recipient(recipient)
+          .url(url)
+          .source("invalidSource")
+          .build()
+      ).to.throw(EnumException);
+    });
 
     it("if it has every required property should be ok", () => {
       const id = 1;

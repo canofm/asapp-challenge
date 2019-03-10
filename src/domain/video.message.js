@@ -1,5 +1,5 @@
 import { isEmpty } from "lodash";
-import { PropertyRequiredException, BuilderException } from "../exceptions";
+import { PropertyRequiredException, BuilderException, EnumException } from "../exceptions";
 import Message, { types } from "./message";
 
 class VideoMessage extends Message {
@@ -31,7 +31,7 @@ class VideoMessage extends Message {
           throw new PropertyRequiredException("VideoMessage", "url");
         }
         if (!Object.values(sources).includes(this._source)) {
-          throw new PropertyRequiredException("VideoMessage", "source"); //TODO: enum exception!
+          throw new EnumException("source", this._source);
         }
         return new VideoMessage(this);
       }
@@ -44,5 +44,5 @@ export default VideoMessage;
 
 export const sources = {
   YOUTUBE: "youtube",
-  VIDEO: "vimeo"
+  VIMEO: "vimeo"
 };

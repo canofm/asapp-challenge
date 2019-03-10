@@ -83,6 +83,17 @@ export class PropertyRequiredException extends Exception {
   }
 }
 
+export class EnumException extends Exception {
+  constructor(...args) {
+    super(EnumException, ...args);
+    const property = args[0];
+    const value = args[1];
+    this.text = `${value} is not include the valid values that could be taken for ${property}`;
+    this.type = "enum_exception";
+    this.statusCode = 400;
+  }
+}
+
 export class BuilderException extends Exception {
   constructor(...args) {
     super(BuilderException, ...args);
