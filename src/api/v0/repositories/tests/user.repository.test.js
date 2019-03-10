@@ -4,6 +4,7 @@ import UserRepository from "../user.repository";
 import UserMapper from "../../mappers/user.mapper";
 import { Promise } from "bluebird";
 import User from "../../../../domain/user";
+import { EntityNotFoundException } from "../../../../exceptions";
 
 describe("UserRepository", () => {
   const userMapper = new UserMapper();
@@ -54,6 +55,23 @@ describe("UserRepository", () => {
       expect(userFound.id).to.be.a("number");
     });
 
-    it("should calls schema's select with the username and throw UserDoesNotExistsException", () => {});
+    it("should calls schema's select with the username and if user doesn't exists throw an EntityNotFoundException", done => {
+      const username = "anUsername";
+      const where = sinon
+        .stub()
+        .withArgs("username", username)
+        .returns(Promise.resolve(null));
+
+      const select = sinon
+        .stub()
+        .withArgs("id", "username", "password")
+        .returns({ where });
+
+      const userRepository = new UserRepository(userMapper, { select });
+
+      userRepository
+        .getByUsername("UsernameThatDoesntExists")
+        .catch(EntityNotFoundException, () => done());
+    });
   });
 });
