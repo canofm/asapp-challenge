@@ -14,7 +14,7 @@ function createUsersTable(knex) {
       .increments("id")
       .primary()
       .unsigned();
-    table.string("username");
+    table.string("username").unique();
     table.string("password");
     table.timestamps();
   });
