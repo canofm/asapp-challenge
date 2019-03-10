@@ -49,6 +49,29 @@ export class ConnectionDBException extends Exception {
   }
 }
 
+export class MessageMustHaveAContentException extends Exception {
+  constructor(...args) {
+    super(MessageMustHaveAContentException, ...args);
+    this.statusCode = 40;
+    this.message = {
+      text: "Message must have a content.",
+      type: "message_must_have_a_contentexception"
+    };
+  }
+}
+
+export class MessageTypeDontSupportedException extends Exception {
+  constructor(...args) {
+    super(MessageTypeDontSupportedException, ...args);
+    this.statusCode = 400;
+    const type = args[0];
+    this.message = {
+      text: `Message type ${type} don't supported yet.`,
+      type: "message_type_dont_supported_exception"
+    };
+  }
+}
+
 export class PropertyRequiredException extends Exception {
   constructor(...args) {
     super(PropertyRequiredException, ...args);
