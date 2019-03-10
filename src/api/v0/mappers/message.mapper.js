@@ -2,7 +2,8 @@ import { types } from "../../../domain/message";
 import { method } from "bluebird";
 import {
   MessageMustHaveAContentException,
-  MessageTypeDontSupportedException
+  UnsupportedMessageTypeException,
+  PropertyRequiredException
 } from "../../../exceptions";
 import TextMessageMapper from "./text.message.mapper";
 import ImageMessageMapper from "./image.message.mapper";
@@ -25,11 +26,14 @@ class MessageMapper {
   }
 
   toDomain(model) {
+    if (!model) {
+      throw new PropertyRequiredException("Message", "content");
+    }
     if (!model.content) {
       throw new MessageMustHaveAContentException();
     }
     if (!this.mappers.has(model.content.type)) {
-      throw new MessageTypeDontSupportedException(model.content.type);
+      throw new UnsupportedMessageTypeException(model.content.type);
     }
 
     const mapper = this.mappers.get(model.content.type);

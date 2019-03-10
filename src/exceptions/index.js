@@ -60,14 +60,14 @@ export class MessageMustHaveAContentException extends Exception {
   }
 }
 
-export class MessageTypeDontSupportedException extends Exception {
+export class UnsupportedMessageTypeException extends Exception {
   constructor(...args) {
-    super(MessageTypeDontSupportedException, ...args);
+    super(UnsupportedMessageTypeException, ...args);
     this.statusCode = 400;
     const type = args[0];
     this.message = {
       text: `Message type ${type} don't supported yet.`,
-      type: "message_type_dont_supported_exception"
+      type: "unsupported_message_type_exception"
     };
   }
 }
