@@ -1,6 +1,7 @@
 import { merge } from "lodash";
 require("dotenv").config();
 
+//TODO: Take knexfile.js as db config
 const env = process.env.NODE_ENV || "development";
 
 const baseConfig = {
