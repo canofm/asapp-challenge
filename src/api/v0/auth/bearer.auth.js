@@ -1,5 +1,6 @@
 import config from "../../../config";
 import Auth from "./auth";
+import { AuthorizationRequiredException } from "../../../exceptions";
 
 class BearerAuth extends Auth {
   constructor(authService, appConfig = config) {
@@ -11,7 +12,7 @@ class BearerAuth extends Auth {
     return this.authService
       .verifyToken(token)
       .then(payload => resolve(payload))
-      .catch(err => reject(err)); //TODO: Maybe should throw an exception
+      .catch(() => reject(new AuthorizationRequiredException()));
   }
 }
 
