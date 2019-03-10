@@ -43,6 +43,6 @@ describe("User API", () => {
       console.silent = false;
     });
 
-    it("when trying to create an user that already exists, should returns 400", async () => {});
+    it.skip("when trying to create an user that already exists, should returns 400", async () => {});
   });
 });

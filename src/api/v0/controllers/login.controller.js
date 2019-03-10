@@ -1,10 +1,10 @@
 import { props } from "bluebird";
 
 export default class Login {
-  constructor(AuthService, UserMapper, UserService) {
-    this.authService = AuthService;
-    this.userMapper = UserMapper;
-    this.userService = UserService;
+  constructor(authService, userService, userMapper) {
+    this.authService = authService;
+    this.userService = userService;
+    this.userMapper = userMapper;
   }
 
   login(req, res, next) {

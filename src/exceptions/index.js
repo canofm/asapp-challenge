@@ -30,7 +30,7 @@ export class AuthorizationRequiredException extends Error {
 export class LoginException extends Error {
   constructor(...args) {
     super(...args);
-    this.statusCode = 403;
+    this.statusCode = 401;
     this.message = {
       text: "Username or password given didn't match with an existing user.",
       type: "login_exception"
