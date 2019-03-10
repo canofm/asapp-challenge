@@ -13,7 +13,7 @@ class AuthService {
     return bcrypt.hash(password, 8);
   }
 
-  checkPassword(hashedPassword, passwordToCheck) {
+  checkPassword(passwordToCheck, hashedPassword) {
     return new Promise(async (resolve, reject) => {
       const match = await bcrypt.compare(passwordToCheck, hashedPassword);
       if (match) {

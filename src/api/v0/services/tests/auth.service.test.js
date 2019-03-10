@@ -39,14 +39,14 @@ describe("AuthService", () => {
     it("should check password", async () => {
       const password = "aPasswd";
       const hashedPassword = await authService.encrypt(password);
-      await authService.checkPassword(hashedPassword, password);
+      await authService.checkPassword(password, hashedPassword);
     });
 
     it("shouldn't check password", async () => {
       const hashedPassword = await authService.encrypt("aPasswd");
 
       await authService
-        .checkPassword(hashedPassword, "otherPassword")
+        .checkPassword("otherPassword", hashedPassword)
         .catch(LoginException, () => {});
     });
   });

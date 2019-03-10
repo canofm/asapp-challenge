@@ -48,7 +48,7 @@ describe("UserRepository", () => {
 
       const userRepository = new UserRepository(userMapper, { select });
 
-      const userFound = await userRepository.getByUsername("cualquierCosa");
+      const userFound = await userRepository.getByUsername(username);
       expect(userFound.username).to.be.eql(username);
       expect(userFound.password).to.be.a("string");
       expect(userFound.id).to.be.a("number");
