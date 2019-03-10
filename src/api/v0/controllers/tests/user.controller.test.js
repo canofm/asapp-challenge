@@ -42,5 +42,7 @@ describe("User API", () => {
       expect(error.type).to.be.eql(message.type);
       console.silent = false;
     });
+
+    it("when trying to create an user that already exists, should returns 400", async () => {});
   });
 });
