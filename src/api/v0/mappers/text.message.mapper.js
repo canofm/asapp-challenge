@@ -2,11 +2,11 @@ import TextMessage from "../../../domain/text.message";
 import MapperInterface from "./mapper.interface";
 
 class TextMessageMapper extends MapperInterface {
-  toDomain({ sender, recipient, content }) {
+  toDomain({ sender, recipient, text }) {
     return new TextMessage.Builder()
       .sender(sender)
       .recipient(recipient)
-      .text(content.text)
+      .text(text)
       .build();
   }
 

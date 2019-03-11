@@ -7,15 +7,18 @@ import {
   UnsupportedMessageTypeException
 } from "../../../../exceptions";
 import { types } from "../../../../domain/message";
+import RequestMessageMapper from "../request.message.mapper";
 
 describe("MessageMapper", () => {
   describe("toDomain", () => {
     it("if model is missing should throws PropertyRequiredException", () => {
-      expect(() => new MessageMapper().toDomain()).to.throw(PropertyRequiredException);
+      expect(() => new RequestMessageMapper().toDomain()).to.throw(PropertyRequiredException);
     });
 
     it("if content is missing should throws MessageMustHaveAContentException", () => {
-      expect(() => new MessageMapper().toDomain({})).to.throw(MessageMustHaveAContentException);
+      expect(() => new RequestMessageMapper().toDomain({})).to.throw(
+        MessageMustHaveAContentException
+      );
     });
 
     it("if type is not supported should throws UnsupportedMessageTypeException", () => {
@@ -28,7 +31,7 @@ describe("MessageMapper", () => {
       const toDomain = () => {};
       const fakeTextMessageMapper = { toDomain };
       const messageMapper = new MessageMapper(new Map().set(types.TEXT, fakeTextMessageMapper));
-      const message = { sender: 1, recipient: 2, content: { type: supportedType, text: "aText" } };
+      const message = { sender: 1, recipient: 2, type: supportedType, text: "aText" };
 
       const mockTextMessageMapper = sinon
         .mock(fakeTextMessageMapper)
