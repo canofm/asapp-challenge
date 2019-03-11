@@ -4,7 +4,11 @@ import { Promise } from "bluebird";
 import app from "../../../../server";
 import config from "../../../../config";
 import { connect as db } from "../../../../db";
-import { EntityNotFoundException } from "../../../../exceptions";
+import {
+  EntityNotFoundException,
+  UnsupportedMessageTypeException,
+  MessageMustHaveAContentException
+} from "../../../../exceptions";
 import logger from "../../../../logger";
 import UserAPIFactory from "../../factories/user.api.factory";
 import AuthService from "../../services/auth.service";
@@ -66,6 +70,38 @@ describe("Message API", () => {
         "User",
         `${sender.id} or ${recipientDontExist}`
       );
+      expect(error.text).to.be.eql(message.text);
+      expect(error.type).to.be.eql(message.type);
+      logger.silent = false;
+    });
+
+    it("if message type is not supported should returns status code 400 with UnsupportedMessageTypeException", async () => {
+      logger.silent = true;
+      const type = "unsupportedType";
+      const content = { type, otherProperty: "aText" };
+      const { body: error, ...res } = await request()
+        .post(messageURI)
+        .set("Authorization", `Bearer ${bearerToken}`)
+        .send({ sender: sender.id, recipient: recipient, content });
+
+      expect(res).to.have.status(400);
+      expect(res).to.be.json;
+      const { message } = new UnsupportedMessageTypeException(type);
+      expect(error.text).to.be.eql(message.text);
+      expect(error.type).to.be.eql(message.type);
+      logger.silent = false;
+    });
+
+    it("if request doesnt have a content should returns status code 400 with MessageMustHaveAContentException", async () => {
+      logger.silent = true;
+      const { body: error, ...res } = await request()
+        .post(messageURI)
+        .set("Authorization", `Bearer ${bearerToken}`)
+        .send({ sender: sender.id, recipient: recipient });
+
+      expect(res).to.have.status(400);
+      expect(res).to.be.json;
+      const { message } = new MessageMustHaveAContentException();
       expect(error.text).to.be.eql(message.text);
       expect(error.type).to.be.eql(message.type);
       logger.silent = false;

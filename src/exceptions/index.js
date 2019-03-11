@@ -52,7 +52,7 @@ export class ConnectionDBException extends Exception {
 export class MessageMustHaveAContentException extends Exception {
   constructor(...args) {
     super(MessageMustHaveAContentException, ...args);
-    this.statusCode = 40;
+    this.statusCode = 400;
     this.message = {
       text: "Message must have a content.",
       type: "message_must_have_a_contentexception"
