@@ -23,7 +23,7 @@ describe("MessageMapper", () => {
       expect(() => new MessageMapper().toDomain(message)).to.throw(UnsupportedMessageTypeException);
     });
 
-    it("if model is correct should call toDomain method for of the mapper", () => {
+    it("if model is correct should call toDomain method of the proper mapper", () => {
       const supportedType = "text";
       const toDomain = () => {};
       const fakeTextMessageMapper = { toDomain };
@@ -36,6 +36,29 @@ describe("MessageMapper", () => {
         .withExactArgs(message);
 
       messageMapper.toDomain(message);
+      mockTextMessageMapper.verify();
+    });
+  });
+
+  describe("toModel", () => {
+    it("if type is not supported should throws UnsupportedMessageTypeException", () => {
+      const message = { content: { type: "unsupportedType" } };
+      expect(() => new MessageMapper().toModel(message)).to.throw(UnsupportedMessageTypeException);
+    });
+
+    it("if type is supported should call toModel method of the proper mapper", () => {
+      const supportedType = "text";
+      const toModel = () => {};
+      const fakeTextMessageMapper = { toModel };
+      const messageMapper = new MessageMapper(new Map().set(types.TEXT, fakeTextMessageMapper));
+      const message = { sender: 1, recipient: 2, type: supportedType, text: "aText" };
+
+      const mockTextMessageMapper = sinon
+        .mock(fakeTextMessageMapper)
+        .expects("toModel")
+        .withExactArgs(message);
+
+      messageMapper.toModel(message);
       mockTextMessageMapper.verify();
     });
   });
