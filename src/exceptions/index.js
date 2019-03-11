@@ -124,3 +124,5 @@ export class DuplicatedEntityException extends Exception {
     this.statusCode = 409;
   }
 }
+
+export const SQLITE_CONTRAINT_ERRNO = 19;
