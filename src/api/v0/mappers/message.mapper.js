@@ -57,7 +57,7 @@ class MessageMapper extends MapperInterface {
    * @description: this is just sugar syntax in order to chain promises
    */
   toDomainAsync(message) {
-    return method(this.toDomain)(message);
+    return method(this.toDomain.bind(this))(message);
   }
 }
 

@@ -1,13 +1,13 @@
 export default class MessageController {
-  constructor(messageService, messageMapper) {
-    this.messageService = messageService;
-    this.messageMapper = messageMapper;
+  constructor(service, mapper) {
+    this.service = service;
+    this.mapper = mapper;
   }
 
   create(req, res, next) {
-    return this.messageMapper
+    return this.mapper
       .toDomainAsync(req.body)
-      .then(message => this.messageService.create(message))
+      .then(message => this.service.create(message))
       .then(messageCreated => res.status(200).json(messageCreated))
       .catch(err => next(err));
   }

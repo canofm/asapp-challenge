@@ -12,7 +12,7 @@ const request = () => chai.request(app());
 const userURI = `${config.api.baseUri}/users`;
 
 describe("User API", () => {
-  describe("on POST", () => {
+  describe("on POST /users", () => {
     beforeEach(async () => await db()("users").truncate());
     it("should returns 200 with the user's id just created", async () => {
       const user = new User.Builder()
