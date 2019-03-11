@@ -13,11 +13,32 @@ class MessageRepository {
       .insert(messageModel)
       .then(([id]) => ({ id, timestamp }))
       .catch(err => {
+        //TODO: This could be tested
         if (err.errno === SQLITE_CONTRAINT_ERRNO) {
           throw new EntityNotFoundException("User", `${message.sender} or ${message.recipient}`);
         }
         throw new Error(err);
       });
+  }
+
+  getAll(recipientId, starterId, limit) {
+    return this.schema
+      .select(
+        "id",
+        "sender",
+        "recipient",
+        "type",
+        "text",
+        "url",
+        "width",
+        "height",
+        "source",
+        "created_at"
+      )
+      .where("recipient", recipientId)
+      .andWhere("id", ">=", starterId)
+      .limit(limit)
+      .then(messages => messages.map(message => this.mapper.toDomain(message)));
   }
 }
 

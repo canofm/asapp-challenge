@@ -11,4 +11,12 @@ export default class MessageController {
       .then(messageCreated => res.status(200).json(messageCreated))
       .catch(err => next(err));
   }
+
+  fetchAllWithin(req, res, next) {
+    const { recipient, start, limit } = req.body;
+    return this.service
+      .fetchAllWithin(recipient, start, limit)
+      .then(messages => res.status(200).json(messages))
+      .catch(err => next(err));
+  }
 }
