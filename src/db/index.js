@@ -16,5 +16,8 @@ export const createNewConnection = filename =>
   knex({
     client: "sqlite3",
     connection: { filename },
-    useNullAsDefault: true
+    useNullAsDefault: true,
+    pool: {
+      afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb) // active foreign keys constraint!
+    }
   });
