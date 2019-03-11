@@ -29,11 +29,15 @@ function createMessagesTable(knex) {
     table
       .integer("sender")
       .unsigned()
-      .notNullable();
+      .notNullable()
+      .references("id")
+      .inTable("users");
     table
       .integer("recipient")
       .unsigned()
-      .notNullable();
+      .notNullable()
+      .references("id")
+      .inTable("users");
     table.string("text");
     table.string("url");
     table.integer("height").unsigned();
@@ -41,15 +45,6 @@ function createMessagesTable(knex) {
     table.enu("source", ["youtube", "vimeo"]);
     table.enu("type", ["text", "image", "video"]);
     table.timestamps();
-
-    table
-      .foreign("sender")
-      .references("id")
-      .inTable("users");
-    table
-      .foreign("recipient")
-      .references("id")
-      .inTable("users");
   });
 }
 
