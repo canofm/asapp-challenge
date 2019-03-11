@@ -8,9 +8,7 @@ export default class MessageController {
     return this.messageMapper
       .toDomainAsync(req.body)
       .then(message => this.messageService.create(message))
-      .then(messageCreated =>
-        res.status(200).json({ id: messageCreated.id, timestamp: messageCreated.created_at })
-      )
+      .then(messageCreated => res.status(200).json(messageCreated))
       .catch(err => next(err));
   }
 }
