@@ -12,6 +12,8 @@ import {
 import logger from "../../../../logger";
 import UserAPIFactory from "../../factories/user.api.factory";
 import AuthService from "../../services/auth.service";
+import TextMessage from "../../../../domain/text.message";
+import MessageAPIFactory from "../../factories/message.api.factory";
 
 chai.use(chaiHttp);
 const request = appConfig => chai.request(app(appConfig));
@@ -19,21 +21,24 @@ const messageURI = `${config.api.baseUri}/messages`;
 const messageTable = db()("messages");
 const userTable = db()("users");
 const authService = new AuthService();
+const cleanDb = async () => await Promise.all([messageTable.truncate(), userTable.truncate()]);
+const createUsers = async () => {
+  const userService = UserAPIFactory.getService();
+  const users = [
+    { username: "user1", password: "pass1" },
+    { username: "user2", password: "pass2" }
+  ];
+  return await Promise.mapSeries(users, user => userService.create(user));
+};
 
 describe("Message API", () => {
   describe("on POST /messages", () => {
     let sender, recipient, bearerToken;
-    afterEach(async () => await Promise.all([messageTable.truncate(), userTable.truncate()]));
+    afterEach(async () => await cleanDb());
 
     beforeEach(async () => {
-      await Promise.all([messageTable.truncate(), userTable.truncate()]);
-
-      const userService = UserAPIFactory.getService();
-      const users = [
-        { username: "user1", password: "pass1" },
-        { username: "user2", password: "pass2" }
-      ];
-      [sender, recipient] = await Promise.mapSeries(users, user => userService.create(user));
+      await cleanDb();
+      [sender, recipient] = await createUsers();
       bearerToken = await authService.getNewToken(sender);
     });
 
@@ -102,4 +107,52 @@ describe("Message API", () => {
       logger.silent = false;
     });
   });
+
+  describe("on GET /messages", () => {
+    let sender, recipient, token;
+    afterEach(async () => await cleanDb());
+    beforeEach(async () => {
+      await cleanDb();
+      [sender, recipient] = await createUsers();
+      token = await authService.getNewToken(recipient);
+    });
+
+    it("if there is not any messages, should returns an empty array", async () => {
+      const { body, ...res } = await request()
+        .get(messageURI)
+        .set("Authorization", `Bearer ${token}`)
+        .query({ recipient, start: 1 });
+
+      expect(res).to.have.status(200);
+      expect(res).to.be.json;
+      expect(body).to.be.eql([]);
+    });
+
+    it.only("should returns all messages from recipient", async () => {
+      const messages = await createMessages(recipient.id, sender.id, 5);
+      console.log({ messages });
+      const { body, ...res } = await request()
+        .get(messageURI)
+        .set("Authorization", `Bearer ${token}`)
+        .query({ recipient, start: 1, limit: 3 });
+
+      expect(res).to.have.status(200);
+      expect(res).to.be.json;
+      console.log({ body });
+    });
+  });
 });
+
+const createMessages = async (recipientId, senderId, n) => {
+  let messages = [];
+  for (let i = 0; i < n; i++) {
+    const message = new TextMessage.Builder()
+      .sender(senderId)
+      .recipient(recipientId)
+      .text("aText")
+      .build();
+    messages.push(message);
+  }
+  const messageService = MessageAPIFactory.getService();
+  return await Promise.map(messages, message => messageService.create(message));
+};

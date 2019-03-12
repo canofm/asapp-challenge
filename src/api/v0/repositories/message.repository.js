@@ -23,22 +23,14 @@ class MessageRepository {
 
   getAll(recipientId, starterId, limit) {
     return this.schema
-      .select(
-        "id",
-        "sender",
-        "recipient",
-        "type",
-        "text",
-        "url",
-        "width",
-        "height",
-        "source",
-        "created_at"
-      )
       .where("recipient", recipientId)
-      .andWhere("id", ">=", starterId)
+      .andWhere("id", 1)
       .limit(limit)
-      .then(messages => messages.map(message => this.mapper.toDomain(message)));
+      .select()
+      .then(messages => {
+        console.log({ messages });
+        return messages.map(message => this.mapper.toDomain(message));
+      });
   }
 }
 

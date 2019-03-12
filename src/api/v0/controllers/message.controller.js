@@ -13,7 +13,7 @@ export default class MessageController {
   }
 
   fetchAllWithin(req, res, next) {
-    const { recipient, start, limit } = req.body;
+    const { recipient, start, limit } = req.query;
     return this.service
       .fetchAllWithin(recipient, start, limit)
       .then(messages => res.status(200).json(messages))
