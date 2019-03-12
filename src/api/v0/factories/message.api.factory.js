@@ -6,7 +6,7 @@ import MessageController from "../controllers/message.controller";
 import MessageMapper from "../mappers/message.mapper";
 import RequestMessageMapper from "../mappers/request.message.mapper";
 
-const defaultSetup = { db: db()("messages") };
+const defaultSetup = { db: (table = "messages") => db()(table) };
 const messageMapper = new MessageMapper();
 const requestMessageMapper = new RequestMessageMapper();
 class MessageAPIFactory {
