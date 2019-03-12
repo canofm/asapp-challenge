@@ -83,6 +83,16 @@ export class PropertyRequiredException extends Exception {
   }
 }
 
+export class FetchRequiredArgumentException extends Exception {
+  constructor(...args) {
+    super(FetchRequiredArgumentException, ...args);
+    const property = args[0];
+    this.text = `Fetch all messages required a ${property}`;
+    this.type = "fetch_required_argument_exception";
+    this.statusCode = 400;
+  }
+}
+
 export class EnumException extends Exception {
   constructor(...args) {
     super(EnumException, ...args);

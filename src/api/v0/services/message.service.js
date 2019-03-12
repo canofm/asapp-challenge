@@ -1,3 +1,5 @@
+import { FetchRequiredArgumentException } from "../../../exceptions";
+
 class MessageService {
   constructor(repository) {
     this.repository = repository;
@@ -7,13 +9,13 @@ class MessageService {
     return this.repository.create(message);
   }
 
-  fetchAllWitihin(userId, starterId, limit = 100) {
+  fetchAllWithin(userId, starterId, limit = 100) {
     //TODO: probably from config
     if (!userId) {
-      throw new Error("Fetch all messages required a recipient id");
+      throw new FetchRequiredArgumentException("recipient id");
     }
     if (!starterId) {
-      throw new Error("Fetch all messages required a starter message id");
+      throw new FetchRequiredArgumentException("starter message id");
     }
 
     return this.repository.getAll(userId, starterId, limit);
