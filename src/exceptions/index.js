@@ -135,4 +135,4 @@ export class DuplicatedEntityException extends Exception {
   }
 }
 
-export const SQLITE_CONTRAINT_ERRNO = 19;
+export const SQLITE_CONSTRAINT_ERRNO = 19;

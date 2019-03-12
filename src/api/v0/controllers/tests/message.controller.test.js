@@ -23,22 +23,17 @@ const authService = new AuthService();
 describe("Message API", () => {
   describe("on POST /messages", () => {
     let sender, recipient, bearerToken;
-    //FIXME: randomly tests fails because of unique constraint, it seems that we are not waiting for truncate
-    afterEach(async () => {
-      await messageTable.truncate();
-      await userTable.truncate();
-    });
+    afterEach(async () => await Promise.all([messageTable.truncate(), userTable.truncate()]));
 
     beforeEach(async () => {
-      await messageTable.truncate();
-      await userTable.truncate();
+      await Promise.all([messageTable.truncate(), userTable.truncate()]);
 
       const userService = UserAPIFactory.getService();
       const users = [
         { username: "user1", password: "pass1" },
         { username: "user2", password: "pass2" }
       ];
-      [sender, recipient] = await Promise.map(users, user => userService.create(user));
+      [sender, recipient] = await Promise.mapSeries(users, user => userService.create(user));
       bearerToken = await authService.getNewToken(sender);
     });
 
@@ -55,7 +50,7 @@ describe("Message API", () => {
       expect(body.timestamp).to.exist;
     });
 
-    it("if sender/recipient doesnt exists should returns status code 404 with EntityNotFoundException", async () => {
+    it("if sender/recipient does not exists should returns status code 404 with EntityNotFoundException", async () => {
       logger.silent = true;
       const content = { type: "text", text: "aText" };
       const recipientDontExist = 5;
@@ -67,7 +62,7 @@ describe("Message API", () => {
       expect(res).to.have.status(404);
       expect(res).to.be.json;
       const { message } = new EntityNotFoundException(
-        "User",
+        "Message",
         `${sender.id} or ${recipientDontExist}`
       );
       expect(error.text).to.be.eql(message.text);
