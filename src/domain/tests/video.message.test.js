@@ -45,10 +45,10 @@ describe("VideoMessage", () => {
 
       expect(videoMessage.sender).to.be.eql(sender);
       expect(videoMessage.recipient).to.be.eql(recipient);
-      expect(videoMessage.url).to.be.eql(url);
-      expect(videoMessage.source).to.be.eql(sources.YOUTUBE);
+      expect(videoMessage.content.url).to.be.eql(url);
+      expect(videoMessage.content.source).to.be.eql(sources.YOUTUBE);
+      expect(videoMessage.content.type).to.be.eql(types.VIDEO);
       expect(videoMessage.id).to.be.eql(id);
-      expect(videoMessage.type).to.be.eql(types.VIDEO);
     });
   });
 });

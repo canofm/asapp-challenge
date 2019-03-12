@@ -10,8 +10,8 @@ class TextMessageMapper extends MapperInterface {
       .build();
   }
 
-  toModel({ sender, recipient, type, text }) {
-    return { sender, recipient, type, text };
+  toModel({ sender, recipient, content }) {
+    return { sender, recipient, type: content.type, text: content.text };
   }
 }
 

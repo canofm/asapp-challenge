@@ -37,11 +37,11 @@ describe("ImageMessage", () => {
 
       expect(imageMessage.sender).to.be.eql(sender);
       expect(imageMessage.recipient).to.be.eql(recipient);
-      expect(imageMessage.url).to.be.eql(url);
-      expect(imageMessage.height).to.be.eql(height);
-      expect(imageMessage.width).to.be.eql(width);
+      expect(imageMessage.content.url).to.be.eql(url);
+      expect(imageMessage.content.height).to.be.eql(height);
+      expect(imageMessage.content.width).to.be.eql(width);
       expect(imageMessage.id).to.be.eql(id);
-      expect(imageMessage.type).to.be.eql(types.IMAGE);
+      expect(imageMessage.content.type).to.be.eql(types.IMAGE);
     });
   });
 });

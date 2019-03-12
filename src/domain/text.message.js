@@ -9,7 +9,7 @@ class TextMessage extends Message {
     }
 
     super(build, types.TEXT);
-    this.text = build._text;
+    this.content.text = build._text;
   }
 
   static get Builder() {

@@ -54,7 +54,7 @@ describe("MessageMapper", () => {
       const toModel = () => {};
       const fakeTextMessageMapper = { toModel };
       const messageMapper = new MessageMapper(new Map().set(types.TEXT, fakeTextMessageMapper));
-      const message = { sender: 1, recipient: 2, type: supportedType, text: "aText" };
+      const message = { sender: 1, recipient: 2, content: { type: supportedType, text: "aText" } };
 
       const mockTextMessageMapper = sinon
         .mock(fakeTextMessageMapper)

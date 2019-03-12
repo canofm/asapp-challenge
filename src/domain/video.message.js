@@ -9,8 +9,8 @@ class VideoMessage extends Message {
     }
 
     super(build, types.VIDEO);
-    this.url = build._url;
-    this.source = build._source;
+    this.content.url = build._url;
+    this.content.source = build._source;
   }
 
   static get Builder() {

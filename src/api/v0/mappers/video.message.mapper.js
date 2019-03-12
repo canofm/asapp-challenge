@@ -11,8 +11,8 @@ class VideoMessageMapper extends MapperInterface {
       .build();
   }
 
-  toModel({ sender, recipient, url, source, type }) {
-    return { sender, recipient, url, source, type };
+  toModel({ sender, recipient, content }) {
+    return { sender, recipient, url: content.url, source: content.source, type: content.type };
   }
 }
 

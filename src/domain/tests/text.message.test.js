@@ -33,9 +33,9 @@ describe("TextMessage", () => {
 
       expect(textMessage.sender).to.be.eql(sender);
       expect(textMessage.recipient).to.be.eql(recipient);
-      expect(textMessage.text).to.be.eql(text);
+      expect(textMessage.content.text).to.be.eql(text);
       expect(textMessage.id).to.be.eql(id);
-      expect(textMessage.type).to.be.eql(types.TEXT);
+      expect(textMessage.content.type).to.be.eql(types.TEXT);
     });
   });
 });

@@ -12,8 +12,15 @@ class ImageMessageMapper extends MapperInterface {
       .build();
   }
 
-  toModel({ sender, recipient, type, url, width, height }) {
-    return { sender, recipient, type, url, width, height };
+  toModel({ sender, recipient, content }) {
+    return {
+      sender,
+      recipient,
+      type: content.type,
+      url: content.url,
+      width: content.width,
+      height: content.height
+    };
   }
 }
 

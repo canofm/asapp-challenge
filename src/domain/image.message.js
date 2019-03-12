@@ -9,9 +9,9 @@ class ImageMessage extends Message {
     }
 
     super(build, types.IMAGE);
-    this.url = build._url;
-    this.height = build._height;
-    this.width = build._width;
+    this.content.url = build._url;
+    this.content.height = build._height;
+    this.content.width = build._width;
   }
 
   static get Builder() {

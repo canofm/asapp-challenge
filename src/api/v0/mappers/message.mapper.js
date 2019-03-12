@@ -23,10 +23,10 @@ class MessageMapper extends MapperInterface {
    * @param {*} message: this should be a domain message
    */
   toModel(message) {
-    if (!this.mappers.has(message.type)) {
-      throw new UnsupportedMessageTypeException(message.type);
+    if (!this.mappers.has(message.content.type)) {
+      throw new UnsupportedMessageTypeException(message.content.type);
     }
-    const mapper = this.mappers.get(message.type);
+    const mapper = this.mappers.get(message.content.type);
     return mapper.toModel(message);
   }
 
