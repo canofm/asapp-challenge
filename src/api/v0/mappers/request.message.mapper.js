@@ -2,6 +2,10 @@ import MessageMapper from "./message.mapper";
 import { PropertyRequiredException, MessageMustHaveAContentException } from "../../../exceptions";
 
 class RequestMessageMapper extends MessageMapper {
+  /**
+   * @description map from a request object to a domain message
+   * @param {*} message: { sender, recipient, content: { type, text, url, width, height, source }}
+   */
   toDomain(message) {
     if (!message) {
       throw new PropertyRequiredException("Message", "content");

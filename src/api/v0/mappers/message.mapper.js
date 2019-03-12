@@ -32,7 +32,7 @@ class MessageMapper extends MapperInterface {
 
   /**
    * @description: map to a domain entity
-   * @param {*} message: this message is the one from the request
+   * @param {*} message: this a flat message with all properties
    */
   toDomain(message) {
     if (!this.mappers.has(message.type)) {
