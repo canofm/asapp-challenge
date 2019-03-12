@@ -4,7 +4,7 @@ import app from "../../../../server";
 import config from "../../../../config";
 import User from "../../../../domain/user";
 import { connect as db } from "../../../../db";
-import { PropertyRequiredException } from "../../../../exceptions";
+import { PropertyRequiredException, DuplicatedEntityException } from "../../../../exceptions";
 import { console } from "../../../../logger";
 
 chai.use(chaiHttp);
@@ -43,6 +43,25 @@ describe("User API", () => {
       console.silent = false;
     });
 
-    it.skip("when trying to create an user that already exists, should returns 400", async () => {});
+    it("when trying to create an user that already exists, should returns 409", async () => {
+      console.silent = true;
+      const username = "anUsername";
+      const password = "aPassword";
+
+      await request()
+        .post(userURI)
+        .send({ username, password });
+
+      const { body: error, ...res } = await request()
+        .post(userURI)
+        .send({ username, password });
+
+      expect(res).to.have.status(409);
+      expect(res).to.be.json;
+      const { message } = new DuplicatedEntityException();
+      expect(error.text).to.be.eql(message.text);
+      expect(error.type).to.be.eql(message.type);
+      console.silent = false;
+    });
   });
 });

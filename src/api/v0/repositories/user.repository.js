@@ -1,4 +1,8 @@
-import { EntityNotFoundException } from "../../../exceptions";
+import {
+  EntityNotFoundException,
+  SQLITE_CONSTRAINT_ERRNO,
+  DuplicatedEntityException
+} from "../../../exceptions";
 
 class UserRepository {
   constructor(mapper, schema) {
@@ -8,7 +12,15 @@ class UserRepository {
 
   create(user) {
     const userModel = this.mapper.toModel(user);
-    return this.schema.insert(userModel).then(([id]) => ({ id }));
+    return this.schema
+      .insert(userModel)
+      .then(([id]) => ({ id }))
+      .catch(err => {
+        if (err.errno === SQLITE_CONSTRAINT_ERRNO) {
+          throw new DuplicatedEntityException();
+        }
+        throw Error(err);
+      });
   }
 
   getByUsername(username) {
