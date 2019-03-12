@@ -21,15 +21,6 @@ const messageURI = `${config.api.baseUri}/messages`;
 const messageTable = db()("messages");
 const userTable = db()("users");
 const authService = new AuthService();
-const cleanDb = async () => await Promise.all([messageTable.truncate(), userTable.truncate()]);
-const createUsers = async () => {
-  const userService = UserAPIFactory.getService();
-  const users = [
-    { username: "user1", password: "pass1" },
-    { username: "user2", password: "pass2" }
-  ];
-  return await Promise.mapSeries(users, user => userService.create(user));
-};
 
 describe("Message API", () => {
   describe("on POST /messages", () => {
@@ -128,20 +119,44 @@ describe("Message API", () => {
       expect(body).to.be.eql([]);
     });
 
-    it.only("should returns all messages from recipient", async () => {
+    it("should returns all messages from recipient", async () => {
       const messages = await createMessages(recipient.id, sender.id, 5);
-      console.log({ messages });
       const { body, ...res } = await request()
         .get(messageURI)
         .set("Authorization", `Bearer ${token}`)
-        .query({ recipient, start: 1, limit: 3 });
+        .query({ recipient, start: 2, limit: 2 });
 
       expect(res).to.have.status(200);
       expect(res).to.be.json;
-      console.log({ body });
+      const [message2, message3] = body;
+      const [messageExpected2, messageExpected3] = messages.slice(1, 3);
+
+      expect(message2.id).to.be.eql(messageExpected2.id);
+      expect(message2.timestamp).to.be.eql(messageExpected2.timestamp);
+      expect(message2.sender).to.be.eql(sender.id);
+      expect(message2.recipient).to.be.eql(recipient.id);
+      expect(message2.content.type).to.be.eql("text");
+      expect(message3.id).to.be.eql(messageExpected3.id);
+      expect(message3.timestamp).to.be.eql(messageExpected3.timestamp);
+      expect(message3.sender).to.be.eql(sender.id);
+      expect(message3.recipient).to.be.eql(recipient.id);
+      expect(message3.content.type).to.be.eql("text");
     });
   });
 });
+
+/** Helpers */
+
+const cleanDb = async () => await Promise.all([messageTable.truncate(), userTable.truncate()]);
+
+const createUsers = async () => {
+  const userService = UserAPIFactory.getService();
+  const users = [
+    { username: "user1", password: "pass1" },
+    { username: "user2", password: "pass2" }
+  ];
+  return await Promise.mapSeries(users, user => userService.create(user));
+};
 
 const createMessages = async (recipientId, senderId, n) => {
   let messages = [];

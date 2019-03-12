@@ -1,4 +1,5 @@
 import { EntityNotFoundException, SQLITE_CONSTRAINT_ERRNO } from "../../../exceptions";
+import { Promise } from "bluebird";
 
 class MessageRepository {
   constructor(mapper, schema) {
@@ -9,7 +10,7 @@ class MessageRepository {
   create(message) {
     const messageModel = this.mapper.toModel(message);
     const timestamp = new Date().toISOString();
-    return this.schema
+    return this.schema()
       .insert(messageModel)
       .then(([id]) => ({ id, timestamp }))
       .catch(err => {
@@ -21,16 +22,13 @@ class MessageRepository {
       });
   }
 
-  getAll(recipientId, starterId, limit) {
-    return this.schema
-      .where("recipient", recipientId)
-      .andWhere("id", 1)
-      .limit(limit)
+  getAll(recipient, starterId, limit) {
+    return this.schema()
+      .where("recipient", recipient.id)
+      .andWhere("id", ">=", starterId)
       .select()
-      .then(messages => {
-        console.log({ messages });
-        return messages.map(message => this.mapper.toDomain(message));
-      });
+      .limit(limit)
+      .then(messages => Promise.map(messages, message => this.mapper.toDomain(message)));
   }
 }
 
