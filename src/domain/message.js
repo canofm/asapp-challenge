@@ -9,6 +9,7 @@ class Message {
     this.content.type = type;
     this.sender = build._sender;
     this.recipient = build._recipient;
+    this.timestamp = build._timestamp;
     if (build._id) this.id = build._id;
   }
 
@@ -26,6 +27,11 @@ class Message {
 
       id(id) {
         this._id = id;
+        return this;
+      }
+
+      timestamp(timestamp) {
+        this._timestamp = timestamp;
         return this;
       }
 
