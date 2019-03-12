@@ -1,21 +1,13 @@
-import Promise from "bluebird"; //I'm just using the Promise from bluebird for the typified catch
-import { AuthorizationRequiredException } from "../../../exceptions";
-
-/**
- * The idea behind this design is to have several polymorphic auth strategies in a chain of responsibility pattern.
- * Maybe this design is an overkill to the challenge required,
- * but I think that this a cost I could afford in order to gain extensibility and flexibility,
- * also testbility and readibility in the perspective of the own auth strategy.
- */
+import { Promise } from "bluebird";
+import {
+  AuthorizationRequiredException,
+  UnsupportedAuthorizationMethodException
+} from "../../../exceptions";
 
 class Auth {
-  constructor(method, config) {
-    this.method = method;
+  constructor(authService, config) {
     this.appConfig = config;
-  }
-
-  setSuccessor(successor) {
-    this.successor = successor;
+    this.authService = authService;
   }
 
   auth(credentials) {
@@ -24,25 +16,19 @@ class Auth {
         reject(new AuthorizationRequiredException());
       }
       const [method, token] = credentials.split(" ");
-      this._authChain(resolve, reject, method, token);
-    });
-  }
-
-  _authChain(resolve, reject, method, token) {
-    if (method.toLowerCase() === this.method.toLowerCase()) {
-      this.authorizate(resolve, reject, token);
-    } else {
-      if (this.successor) {
-        this.successor.authorizate(resolve, reject, token);
-      } else {
+      if (!method) {
         reject(new AuthorizationRequiredException());
       }
-    }
-  }
 
-  //eslint-disable-next-line
-  authorizate(resolve, reject, token) {
-    throw new Error("must implement this method");
+      if (method === "Bearer") {
+        return this.authService
+          .verifyToken(token)
+          .then(payload => resolve(payload))
+          .catch(() => reject(new AuthorizationRequiredException()));
+      } else {
+        reject(new UnsupportedAuthorizationMethodException(method));
+      }
+    });
   }
 }
 

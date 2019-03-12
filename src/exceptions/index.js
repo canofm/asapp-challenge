@@ -72,6 +72,18 @@ export class UnsupportedMessageTypeException extends Exception {
   }
 }
 
+export class UnsupportedAuthorizationMethodException extends Exception {
+  constructor(...args) {
+    super(UnsupportedAuthorizationMethodException, ...args);
+    this.statusCode = 400;
+    const method = args[0];
+    this.message = {
+      text: `${method} don't supported.`,
+      type: "unsupported_authorization_method_exception"
+    };
+  }
+}
+
 export class PropertyRequiredException extends Exception {
   constructor(...args) {
     super(PropertyRequiredException, ...args);
