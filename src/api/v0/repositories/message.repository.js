@@ -14,7 +14,6 @@ class MessageRepository {
       .insert(messageModel)
       .then(([id]) => ({ id, timestamp }))
       .catch(err => {
-        //TODO: This could be tested
         if (err.errno === SQLITE_CONSTRAINT_ERRNO) {
           throw new EntityNotFoundException("Message", `${message.sender} or ${message.recipient}`);
         }

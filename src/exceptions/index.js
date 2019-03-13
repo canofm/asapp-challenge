@@ -127,7 +127,6 @@ export class BuilderException extends Exception {
 }
 
 export class EntityNotFoundException extends Exception {
-  //TODO: this should accept key=value
   constructor(...args) {
     super(EntityNotFoundException, ...args);
     const entity = args[0];

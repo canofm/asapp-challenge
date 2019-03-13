@@ -2,7 +2,6 @@ import chai, { expect } from "chai";
 import chaiHttp from "chai-http";
 import app from "../../../../server";
 import config from "../../../../config";
-import { ConnectionDBException } from "../../../../exceptions";
 import HealthAPIFactory from "../../factories/health.api.factory";
 
 chai.use(chaiHttp);
@@ -19,18 +18,6 @@ describe("Health API", () => {
       expect(res).to.have.status(200);
       expect(res).to.be.json;
       expect(JSON.stringify(body)).to.be.eql(JSON.stringify(HealthAPIFactory.getHealthOk()));
-    });
-
-    it.skip("if it cannot connect to db, then it should returns 500", async () => {
-      //FIXME:
-      const { error, ...res } = await request({ db: { path: "./db/fileThatDoesntExists.sqlite3" } })
-        .post(healthURI)
-        .send();
-
-      expect(res).to.have.status(500);
-      expect(res).to.be.json;
-      const errorExpected = new ConnectionDBException();
-      expect(JSON.stringify(error)).to.be.eql(JSON.stringify(errorExpected));
     });
   });
 });

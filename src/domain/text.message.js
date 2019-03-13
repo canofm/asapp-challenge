@@ -22,7 +22,7 @@ class TextMessage extends Message {
       build() {
         super.build();
         if (isEmpty(this._text)) {
-          throw new PropertyRequiredException("TextMessage", "text"); //TODO: exception cannot send blank message
+          throw new PropertyRequiredException("TextMessage", "text");
         }
 
         return new TextMessage(this);

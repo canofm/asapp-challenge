@@ -18,6 +18,6 @@ export const createNewConnection = filename =>
     connection: { filename },
     useNullAsDefault: true,
     pool: {
-      afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb) // active foreign keys constraint!
+      afterCreate: (conn, cb) => conn.run("PRAGMA foreign_keys = ON", cb) // active constraint!
     }
   });

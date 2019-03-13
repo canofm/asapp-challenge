@@ -1,4 +1,5 @@
 import { FetchRequiredArgumentException } from "../../../exceptions";
+import config from "../../../config";
 
 class MessageService {
   constructor(repository) {
@@ -9,8 +10,7 @@ class MessageService {
     return this.repository.create(message);
   }
 
-  fetchAllWithin(userId, starterId, limit = 100) {
-    //TODO: probably from config
+  fetchAllWithin(userId, starterId, limit = config.api.messages.limit) {
     if (!userId) {
       throw new FetchRequiredArgumentException("recipient id");
     }
