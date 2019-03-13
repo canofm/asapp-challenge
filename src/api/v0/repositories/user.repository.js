@@ -12,7 +12,7 @@ class UserRepository {
 
   create(user) {
     const userModel = this.mapper.toModel(user);
-    return this.schema
+    return this.schema()
       .insert(userModel)
       .then(([id]) => ({ id }))
       .catch(err => {
@@ -24,7 +24,7 @@ class UserRepository {
   }
 
   getByUsername(username) {
-    return this.schema
+    return this.schema()
       .select("id", "username", "password")
       .where("username", username)
       .then(([user]) => {

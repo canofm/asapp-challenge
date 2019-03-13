@@ -1,12 +1,12 @@
 import { isEmpty } from "lodash";
-import { connect as db } from "../../../db";
+import { connect } from "../../../db";
 import UserRepository from "../repositories/user.repository";
 import UserService from "../services/user.service";
 import UserController from "../controllers/user.controller";
 import UserMapper from "../mappers/user.mapper";
 import AuthService from "../services/auth.service";
 
-const defaultSetup = { db: db()("users") };
+const defaultSetup = { db: (table = "users") => connect()(table) };
 const userMapper = new UserMapper();
 
 class UserAPIFactory {

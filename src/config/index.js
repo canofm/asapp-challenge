@@ -1,13 +1,13 @@
 import { merge } from "lodash";
 require("dotenv").config();
+import knexconfig from "../../knexfile";
 
-//TODO: Take knexfile.js as db config
 const env = process.env.NODE_ENV || "development";
 
 const baseConfig = {
-  port: process.env.PORT || 3002,
+  port: process.env.PORT || 3000,
   db: {
-    path: process.env.DB_PATH || "./db/challenge.sqlite3"
+    path: process.env.DB_FILENAME || "./db/challenge.sqlite3"
   },
   api: {
     baseUri: process.env.API_SUFFIX || "/api/v0",
@@ -26,14 +26,17 @@ let envConfig = {};
 switch (env) {
   case "development":
   case "dev":
-    envConfig = require("./development").config;
+    envConfig = require("./development").default;
+    envConfig.db = merge(envConfig.db, knexconfig.development);
     break;
   case "prod":
   case "production":
-    envConfig = require("./production").config;
+    envConfig = require("./production").default;
+    envConfig.db = merge(envConfig.db, knexconfig.production);
     break;
   default:
-    envConfig = require("./development").config;
+    envConfig = require("./development").default;
+    envConfig.db = merge(envConfig.db, knexconfig.development);
 }
 
 export default merge(baseConfig, envConfig);

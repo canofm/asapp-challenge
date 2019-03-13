@@ -21,7 +21,7 @@ describe("UserRepository", () => {
         .stub()
         .withArgs(userModel)
         .returns(Promise.resolve([id]));
-      const userRepository = new UserRepository(userMapper, { insert });
+      const userRepository = new UserRepository(userMapper, () => ({ insert }));
 
       const userCreated = await userRepository.create(user);
       expect(userCreated.id).to.be.eql(id);
@@ -47,7 +47,7 @@ describe("UserRepository", () => {
         .withArgs("id", "username", "password")
         .returns({ where });
 
-      const userRepository = new UserRepository(userMapper, { select });
+      const userRepository = new UserRepository(userMapper, () => ({ select }));
 
       const userFound = await userRepository.getByUsername(username);
       expect(userFound.username).to.be.eql(username);
@@ -67,7 +67,7 @@ describe("UserRepository", () => {
         .withArgs("id", "username", "password")
         .returns({ where });
 
-      const userRepository = new UserRepository(userMapper, { select });
+      const userRepository = new UserRepository(userMapper, () => ({ select }));
 
       userRepository
         .getByUsername("UsernameThatDoesntExists")
